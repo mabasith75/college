@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="js/bootstrap.min.js" rel="stylesheet" crossorigin="anonymous">
+    <meta name="description" content="{% block metadescription %}{% endblock %}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body style="margin:20px; background-color:Linen">
+<h2>Place order here</h2>
+<div class="card" style="width:30%">
+    <form action="" method="POST" id="myForm">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Full name"><br>
+        <input type="date" name="dob" placeholder="Date of birth"><br>
+        <input type="number" name="age" placeholder="Enter your age"><br>
+        <label for="gender_category">Gender:</label>
+        <select id="gender_category" name="gender">
+          <option value="category1">Male</option>
+          <option value="category2">Female</option>
+          <option value="category3">Other</option>
+        </select><br>
+        <input type="number" name="phone_number" placeholder="Enter your mobile number"><br>
+        <input type="email" name="email" placeholder="Enter your email ID"><br>
+        <input type="text" name="address" placeholder="Enter your address"><br>
+
+        <label for="main_category">Select department:</label>
+        <select id="main_category" name="main_category">
+          <option value="category1">Science</option>
+          <option value="category2">Commerce</option>
+          <option value="category3">Humanities</option>
+        </select><br>
+
+        <label for="sub_category">Select subject:</label>
+        <select id="sub_category" name="sub_category">
+          <option value="subcategory1">Physics</option>
+          <option value="subcategory2">Chemistry</option>
+          <option value="subcategory3">Biology</option>
+        </select><br>
+    <script>
+      const mainCategoryDropdown = document.getElementById("main_category");
+      const subCategoryDropdown = document.getElementById("sub_category");
+
+      // Define the subcategory options for each main category
+      const subCategoryOptions = {
+        category1: ["Physics", "Chemistry", "Biology"],
+        category2: ["Accounting", "Economics", "Business"],
+        category3: ["History", "Geography", "Language"]
+      };
+
+      // Update the subcategory dropdown options when a main category is selected
+      mainCategoryDropdown.addEventListener("change", function() {
+        // Remove all current subcategory options
+        subCategoryDropdown.innerHTML = "";
+
+        // Get the selected main category value
+        const selectedMainCategory = mainCategoryDropdown.value;
+
+        // Add the subcategory options for the selected main category
+        subCategoryOptions[selectedMainCategory].forEach(function(subCategory) {
+          const option = document.createElement("option");
+          option.text = subCategory;
+          option.value = subCategory.toLowerCase().replace(" ", "_");
+          subCategoryDropdown.appendChild(option);
+        });
+      });
+    </script>
+        <label>Purpose:</label>
+        <select name="purpose-category">
+          <option value="purpose1">Enquiry</option>
+          <option value="purpose2">Place order</option>
+          <option value="purpose3">Return</option>
+        </select><br>
+            <label>Purpose:</label>
+
+        <select name="materials-category">
+          <option value="material1">Record book</option>
+          <option value="material2">Notebook</option>
+          <option value="material3">Exam sheets</option>
+        </select><br>
+        <div class="card">
+
+            <button name="submit" style="background-color: green; color: white; font-size: 17px; font-family:sans-serif; margin-bottom:5px" onclick="showMessage()">Submit</button>
+            <button name="logout" style="background-color: red; color: white; font-size: 17px; font-family:sans-serif"><a href="{% url 'index' %}">Logout</a></button><br>
+
+                {% if request.method == 'POST' and 'submit' in request.POST %}
+                <p>Order confirmed!</p>
+                {% endif %}
+
+        </div>
+    </form>
+</div>
+<style>
+.card {
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  padding: 20px;
+  border-radius: 5px;
+}
+</style>
+{% include 'footer.html' %}
+</body>
+</html>
